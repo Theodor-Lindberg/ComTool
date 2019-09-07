@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>res/app_icon.ico</file>
+        <file>res/check_mark.png</file>
+        <file>res/connection_logo.png</file>
+        <file>res/error_mark.png</file>
+        <file>res/firmware_menu.png</file>
+        <file>res/home_menu.png</file>
+        <file>res/settings_menu.png</file>
+        <file>main.cpp</file>
+    </qresource>
+</RCC>
