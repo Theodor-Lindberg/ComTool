@@ -9,5 +9,9 @@
         <file>res/home_menu.png</file>
         <file>res/settings_menu.png</file>
         <file>main.cpp</file>
+        <file>Constants.js</file>
+        <file>Settings.qml</file>
+        <file>FirmwareUpdate.qml</file>
+        <file>ComMenu.qml</file>
     </qresource>
 </RCC>

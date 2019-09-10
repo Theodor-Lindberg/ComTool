@@ -4,14 +4,15 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.3
+import "Constants.js" as Const
 
 ApplicationWindow {
     id: window
     visible: true
     width: 640
     height: 480
-    title: qsTr("ComTool")
-    color: "#333333"
+    title: qsTr(Const.MainWindow_Title)
+    color: Const.Color_DarkGrey
 
     Material.theme: Material.Dark
     Material.accent: Material.BlueGrey
@@ -27,8 +28,6 @@ ApplicationWindow {
         anchors.rightMargin: 0
         anchors.left: sidemenu.left
         anchors.leftMargin: 0
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
         RowLayout {
             anchors.fill: parent
             spacing: 10
@@ -67,6 +66,19 @@ ApplicationWindow {
         }
     }
 
+    Settings {
+        id: settings_page
+        z: -1
+    }
+
+    FirmwareUpdate {
+        id: fw_page
+    }
+
+    ComMenu {
+        id: com_page
+    }
+
     ToolBar {
         id: sidemenu
         width: 55
@@ -78,15 +90,13 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
         background: Rectangle {
-            color: "#34515f"
+            color: Const.Color_DarkBlueGrey
         }
 
         Button {
             id: btnSettingsMenu
             x: 69
             y: 410
-            onHoveredChanged: rec.color = hovered ? "#8eacbc" : "#34515f"
-
             icon.source: "res/settings_menu.png"
             ToolTip.visible: hovered
             ToolTip.delay: 1000
@@ -96,10 +106,11 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             anchors.horizontalCenter: parent.horizontalCenter
+            antialiasing: true
+            onClicked: stack.replace(settings_page)
             background: Rectangle {
-                        id: rec
-                        color: "#34515f"
-                        border.color: "#34515f"
+                        color: parent.hovered ? Const.Color_LightBlueGrey : Const.Color_DarkBlueGrey
+                        border.color: Const.Color_DarkBlueGrey
                         border.width: 1
                         radius: 4
                     }
@@ -108,7 +119,6 @@ ApplicationWindow {
         Button {
             id: btnHomeMenu
             x: 69
-            onHoveredChanged: rec2.color = hovered ? "#8eacbc" : "#34515f"
             ToolTip.visible: hovered
             ToolTip.delay: 1000
             ToolTip.text: "Home"
@@ -119,10 +129,11 @@ ApplicationWindow {
             anchors.topMargin: 0
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
+            antialiasing: true
             background: Rectangle {
-                        id: rec2
-                        color: "#34515f"
-                        border.color: "#34515f"
+                        id: recHomeMenu
+                        color: parent.hovered ? Const.Color_LightBlueGrey : Const.Color_DarkBlueGrey
+                        border.color: Const.Color_DarkBlueGrey
                         border.width: 1
                         radius: 4
                     }
@@ -131,8 +142,6 @@ ApplicationWindow {
         Button {
         id: btnFirmwareMenu
         x: 69
-        onHoveredChanged: rec3.color = hovered ? "#8eacbc" : "#34515f"
-
         icon.source: "res/firmware_menu.png"
         ToolTip.visible: hovered
         ToolTip.delay: 1000
@@ -143,10 +152,11 @@ ApplicationWindow {
         anchors.topMargin: 40
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
+        antialiasing: true
+        onClicked: stack.replace(fw_page)
         background: Rectangle {
-                    id: rec3
-                    color: "#34515f"
-                    border.color: "#34515f"
+                    color: parent.hovered ? Const.Color_LightBlueGrey : Const.Color_DarkBlueGrey
+                    border.color: Const.Color_DarkBlueGrey
                     border.width: 1
                     radius: 4
                 }
@@ -155,8 +165,6 @@ ApplicationWindow {
         Button {
         id: btnComMenu
         x: 69
-        onHoveredChanged: rec4.color = hovered ? "#8eacbc" : "#34515f"
-
         icon.source: "res/connection_logo.png"
         ToolTip.visible: hovered
         ToolTip.delay: 1000
@@ -168,82 +176,83 @@ ApplicationWindow {
         antialiasing: true
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
+        onClicked: stack.replace(com_page)
         background: Rectangle {
-                    id: rec4
-                    color: "#34515f"
-                    border.color: "#34515f"
+                    color: parent.hovered ? Const.Color_LightBlueGrey : Const.Color_DarkBlueGrey
+                    border.color: Const.Color_DarkBlueGrey
                     border.width: 1
                     radius: 4
                 }
         }
     }
 
-    CheckBox {
-        id: checkBox
-        x: 50
-        y: 353
-        text: qsTr("Check Box")
+    StackView {
+        id: stack
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 0
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 63
-        anchors.horizontalCenterOffset: 0
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
-
-    Slider {
-        id: slider
-        x: 346
-        y: 261
-        value: 0.5
-        onHoveredChanged: test.color = hovered || pressed ? "#f6f6f6" : "#8eacbc"
-        onPressedChanged: test.color = hovered || pressed ? "#f6f6f6" : "#8eacbc"
-        background: Rectangle {
-            x: slider.leftPadding
-            y: slider.topPadding + slider.availableHeight / 2 - height / 2
-            implicitWidth: 200
-            implicitHeight: 4
-            width: slider.availableWidth
-            height: implicitHeight
-            radius: 2
-            color: "#FFFFFF"
-
-            Rectangle {
-                width: slider.visualPosition * parent.width
-                height: parent.height
-                color: "#607d8b"
-                radius: 2
+        anchors.bottomMargin: 0
+        anchors.left: sidemenu.right
+        anchors.leftMargin: 0
+        initialItem: settings_page
+        replaceEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to:1
+                duration: 100
             }
         }
-
-        handle: Rectangle {
-            id: test
-            x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
-            y: slider.topPadding + slider.availableHeight / 2 - height / 2
-            implicitWidth: 16
-            implicitHeight: 16
-            radius: 3
-            color: "#8eacbc"
-            border.color: "#8eacbc"
-        }
-    }
-
-    ProgressBar {
-        id: progressBar
-        x: 323
-        y: 156
-        from:slider.from
-        to:slider.to
-        value:slider.value
-        contentItem: Item {
-            Rectangle {
-                id: bar
-                width: progressBar.visualPosition * parent.width
-                height: parent.height
-                radius: 0
-                color:"#FF6347"
+        replaceExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to:0
+                duration: 200
             }
         }
+        pushEnter: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to:1
+                    duration: 100
+                }
+            }
+            pushExit: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 1
+                    to:0
+                    duration: 100
+                }
+            }
+            popEnter: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to:1
+                    duration: 100
+                }
+            }
+            popExit: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 1
+                    to:0
+                    duration: 100
+                }
+            }
     }
 }
+
+
+
+
+
+
 
 
 
